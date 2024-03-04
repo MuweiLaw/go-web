@@ -11,9 +11,9 @@ service Greeter {
 }
 
 message StreamReqData {
-  string  data =1 ;
+  string morseCode = 1 ;
 }
 
 message StreamResData {
-  string data =1 ;
+  string message = 1 ;
 }
