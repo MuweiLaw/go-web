@@ -1,0 +1,102 @@
+{
+	"info": {
+		"_postman_id": "9be1a07b-4953-4e05-bccf-fb2aae4a1090",
+		"name": "XSO",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "31992921"
+	},
+	"item": [
+		{
+			"name": "新增报工计划",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer 3fb973cc-f2af-4838-9220-5414e0b0038c",
+						"type": "text"
+					},
+					{
+						"key": "Platform-Id",
+						"value": "1689154431733325826",
+						"type": "text"
+					},
+					{
+						"key": "Tenant-Id",
+						"value": "1643792365307961346",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"a169241581723253140\": \"个人计划\",\r\n    \"jh_state\": \"创建计划\",\r\n    \"bg_month\": \"2024-02-05\",\r\n    \"jh_bm\": \"SmartOS\",\r\n    \"jh_zb\": \"软件工厂\",\r\n    \"jh_user\": \"1738008521214939137\",\r\n    \"jh_date\": \"2024-02-05\",\r\n    \"jh_time\": \"2024-02-05 08:32:02\",\r\n    \"jh_content\": \"修改知味工厂的公众号推送时间,修改知味工厂登录接口\",\r\n    \"templateId\": \"1692560577767571456\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://h5cajob.cewaycloud.com/fd/formInstance",
+					"protocol": "https",
+					"host": [
+						"h5cajob",
+						"cewaycloud",
+						"com"
+					],
+					"path": [
+						"fd",
+						"formInstance"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "新增报工记录",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer 3fb973cc-f2af-4838-9220-5414e0b0038c",
+						"type": "text"
+					},
+					{
+						"key": "Platform-Id",
+						"value": "1689154431733325826",
+						"type": "text"
+					},
+					{
+						"key": "Tenant-Id",
+						"value": "1643792365307961346",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"a169241581723253140\": \"个人报工\",\r\n    \"bg_sate\": \"发起报工\",\r\n    \"bg_user\": \"1738008521214939137\",\r\n    \"bg_date\": \"2024-02-05\",\r\n    \"a169716501864656712\": \"SmartOS\",\r\n    \"a169716506926550756\": \"软件工厂\",\r\n    \"bg_month\": \"2024-02-05\",\r\n    \"bg_time\": \"2024-02-05 17:30:33\",\r\n    \"bg_content\": \"完成修改知味工厂的公众号推送时间,进行开发知味工厂登录接口\",\r\n    \"templateId\": \"1692558250167926784\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://h5cajob.cewaycloud.com/fd/formInstance",
+					"protocol": "https",
+					"host": [
+						"h5cajob",
+						"cewaycloud",
+						"com"
+					],
+					"path": [
+						"fd",
+						"formInstance"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

@@ -19,6 +19,7 @@ const (
 )
 
 var (
+	//addr = flag.String("addr", "139.159.191.200:40111", "the address to connect to")
 	addr = flag.String("addr", "localhost:40111", "the address to connect to")
 	name = flag.String("name", defaultName, "Name to greet")
 )
@@ -75,6 +76,7 @@ func main() {
 		log.Fatalf("---GetStream--- GetStream Error: \n%v", err)
 	}
 	_ = printGetStream(getStreamClient, &req)
+	log.Print("---GetStream--- 服务器流结束\n\n")
 
 	req.MorseCode = "在嘛, 客户端流, 我的头又秃了一点"
 	putStreamClient, err := client.PutStream(context.Background())
@@ -82,6 +84,7 @@ func main() {
 		log.Fatalf("---PutStream--- PutStream Error: \n%v", err)
 	}
 	_ = printPutStream(putStreamClient, &req)
+	log.Print("---GetStream--- 客户端流结束\n\n")
 
 	req.MorseCode = "在嘛, 双向流, 我的头又秃了一点"
 	allStreamClient, err := client.AllStream(context.Background())

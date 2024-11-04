@@ -1,6 +1,6 @@
 syntax = "proto3";
 package protoc;
-// 服务端流模式
+
 option go_package = "../stream";
 
 service Greeter {
