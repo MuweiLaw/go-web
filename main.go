@@ -4,38 +4,64 @@ import (
 	"database/sql"
 	"fmt"
 	"github.com/gin-gonic/gin"
-	"github.com/go-redis/redis"
+	redis2 "github.com/go-redis/redis"
 	_ "github.com/go-sql-driver/mysql"
+	"go-web/conf"
+	"go-web/db/mysql"
+	"go-web/db/redis"
+	"log"
 )
 
 func main() {
-	db, _ := sql.Open("mysql", "root:admin123456@tcp(localhost:3306)/auth?charset=utf8mb4&parseTime=True")
-	if err := db.Ping(); err != nil {
-		fmt.Println("MySql连接失败")
-		panic("启动失败")
+	appConf := conf.GetAppConf()
+	nConf := conf.GetRemoteConf()
+
+	dbMysql := mysql.GetMysql(*nConf)
+	dbRedis := redis.GetRedis(*nConf)
+
+	// 监听端口，为空则随机端口
+	if err := gin.Default().Run(appConf.Server.Port); err != nil {
+		log.Panicf("gin引擎启动失败! err:%v", err)
 	}
-	fmt.Println("MySql连接成功")
 
-	// 创建redis连接池
-	client := redis.NewClient(&redis.Options{
-		Addr:     "139.159.191.200:6379",
-		Password: "admin123", // 设置密码
-		DB:       0,          // 选择数据库
-		PoolSize: 10,         // 设置连接池大小
-	})
+	/***************************************************测试***************************************************/
+	//测试Mysql
+	rows, err := dbMysql.Query("SELECT * FROM `auth`.`auth_user` LIMIT ?,?", 1, 10)
+	if err != nil {
+		log.Printf("查询失败!")
+	}
+	defer func(rows *sql.Rows) {
+		err := rows.Close()
+		if err != nil {
+			log.Printf("rows close err: %s", err.Error())
+		}
+	}(rows)
 
-	// 测试连接
-	pong, err := client.Ping().Result()
-	fmt.Println(pong, err)
+	// 查询数据
+	var (
+		account  string
+		password string
+	)
+	for rows.Next() {
+		if err := rows.Scan(&account, &password); err != nil {
+			log.Fatal(err)
+		}
+		fmt.Printf("ID: %s, Name: %s\n", account, password)
+	}
 
-	// 设置值
-	err = client.Set("key", "value", 0).Err()
+	// 检查迭代是否因为错误而提前结束
+	if err := rows.Err(); err != nil {
+		log.Fatal(err)
+	}
+
+	//测试Redis, 设置值
+	err = dbRedis.Set("key", "value", 0).Err()
 	if err != nil {
 		fmt.Println(err)
 	}
 
 	// 获取值
-	val, err := client.Get("key").Result()
+	val, err := dbRedis.Get("key").Result()
 	if err != nil {
 		fmt.Println(err)
 	} else {
@@ -43,14 +69,9 @@ func main() {
 	}
 
 	// 关闭连接
-	defer client.Close()
-	// 1.创建路由
-	r := gin.Default()
-
-	// 3.监听端口，默认在8080
-	// Run("里面不指定端口号默认为8080")
-	err = r.Run(":8000")
-	if err != nil {
-		return
-	}
+	defer func(dbRedis *redis2.Client) {
+		if err := dbRedis.Close(); err != nil {
+			log.Printf("rows close err: %s", err.Error())
+		}
+	}(dbRedis)
 }
