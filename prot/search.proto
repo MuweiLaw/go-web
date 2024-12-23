@@ -1,0 +1,20 @@
+// 指明当前使用proto3语法，如果不指定，编译器会使用proto2
+syntax = "proto3";
+// package声明符，用来防止类型有命名冲突
+package protoc;
+// 选项信息，对应go的包路径
+option go_package="../tls/search;search";
+
+//定义一组RPC方法,在服务端实现这些方法,并且在客户端调用这些方法进行远程过程调用菜单
+service SearchService {
+  rpc Search(SearchRequest) returns (SearchResponse) {}
+}
+
+// message关键字，像go中的结构体
+message SearchRequest {
+  string request = 1;
+}
+
+message SearchResponse {
+  string response = 1;
+}

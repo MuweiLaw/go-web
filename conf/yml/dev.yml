@@ -1,0 +1,13 @@
+nacos:
+ discovery:
+  addr: 127.0.0.1:8848
+  namespace: dev
+ config:
+  host: 127.0.0.1
+  port: 8848
+  namespace: murray
+  log-dir: /tmp/nacos/log
+  cache-dir: /tmp/nacos/cache
+  log-level: debug
+  data-id: go-web-dev.yml
+  group: DEV
