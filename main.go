@@ -7,9 +7,11 @@ import (
 	redis2 "github.com/go-redis/redis"
 	_ "github.com/go-sql-driver/mysql"
 	"go-web/conf"
+	"go-web/controller"
 	"go-web/db/mysql"
 	"go-web/db/redis"
 	"log"
+	"net/http"
 )
 
 func main() {
@@ -19,8 +21,16 @@ func main() {
 	dbMysql := mysql.GetMysql(*nConf)
 	dbRedis := redis.GetRedis(*nConf)
 
-	// 监听端口，为空则随机端口
-	if err := gin.Default().Run(appConf.Server.Port); err != nil {
+	e := gin.Default()
+	controller.AppController(e.Group("/app"))
+
+	// 启动方式① 监听端口，为空则随机端口
+	//if err := engine.Run(appConf.Server.Port); err != nil {
+	//	log.Panicf("gin引擎启动失败! err:%v", err)
+	//}
+
+	//启动方式② 使用原生Http的方式 .Run()本质就是对http.ListenAndServer()的封装
+	if err := http.ListenAndServe(appConf.Server.Port, e); err != nil {
 		log.Panicf("gin引擎启动失败! err:%v", err)
 	}
 
