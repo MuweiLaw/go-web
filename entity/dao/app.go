@@ -1,7 +1,7 @@
 package dao
 
 type App struct {
-	Id     int    `json:"id" db:"id"`
+	Id     int64  `json:"id" db:"id"`
 	AppId  string `json:"appId" db:"app_id"`
 	Secret string `json:"secret" db:"secret"`
 	//Permissions     string   `json:"permissions" db:"permissions"`

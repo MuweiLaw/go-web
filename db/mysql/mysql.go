@@ -5,10 +5,30 @@ import (
 	"fmt"
 	"go-web/conf"
 	"log"
+	"sync"
+)
+
+var (
+	mysql *sql.DB
+	once  sync.Once
 )
 
 // GetMysql 获取连接MySQL
-func GetMysql(nConf conf.RemoteConf) *sql.DB {
+func GetMysql() *sql.DB {
+
+	if mysql == nil {
+		once.Do(func() {
+			// 进行单例的初始化工作
+			nConf := conf.GetRemoteConf()
+			mysql = openMysql(*nConf)
+		})
+	}
+	return mysql
+}
+
+// openMysql 获取连接MySQL
+func openMysql(nConf conf.RemoteConf) *sql.DB {
+
 	db, err := sql.Open("mysql",
 		fmt.Sprintf("%s:%s@tcp(%s)/%s?charset=utf8mb4&parseTime=True",
 			nConf.Mysql.User,

@@ -8,10 +8,9 @@ import (
 	"net/http"
 )
 
-type appController struct {
-	appService service.AppService
-	//tokenService service.TokenService
-}
+var (
+	as = *service.GetAppService()
+)
 
 func AppController(rg *gin.RouterGroup) {
 	rg.POST("/create", create())
@@ -24,11 +23,11 @@ func create() func(c *gin.Context) {
 			c.JSON(http.StatusBadRequest, vo.BadRequest.Data())
 			return
 		}
-		//app, err := ac.appService.Create(req)
-		//if err != nil {
-		//	return vo.InternalServerError.Data()
-		//}
-		var test = "ff"
-		c.JSON(http.StatusOK, vo.Success(test))
+		app, err := as.Create(req)
+		if err != nil {
+			c.JSON(http.StatusInternalServerError, vo.Fail(err.Error(), nil))
+			return
+		}
+		c.JSON(http.StatusOK, vo.Success(app))
 	}
 }
